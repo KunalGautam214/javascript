@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+
+<style type="text/css">
+    .customConfirmBox{
+        position:fixed;
+        width:100%;
+        height:100%;
+        /*background:rgba(0,0,0,0.05);*/
+    }
+
+    .customConfirmBox > div{
+        width:400px;
+        margin:10% auto;
+        padding:10px 20px;
+        border:1px solid black;
+        /*word-wrap: break-word;*/
+        /*background:#ccc;*/
+    }
+
+    .customConfirmBox div p{
+        /*text-align:center;*/
+        /*word-wrap: break-word;*/
+    }
+
+    .customConfirmBox div button{
+        width:40%;
+        margin:0 5%;
+        }
+</style>
+
+<body>
+    <button onclick="customConfirmBox('Are you sure?', function(value){ console.log(value); return value; })">Click</button>
+    <button onclick="customConfirm()">customConfirm</button>
+    <p id="demo"></p>
+</body>
+
+<script type="text/javascript">
+    var confirmbox = true;
+    var confirmValue = false;
+    function customConfirm(){
+        
+        var text = "<p>Ensure that the environment checkbox is selected</p>" + 
+                                    "<p><br>\nNot selecting the environment checkbox will remove the user from Pub GUI</p>" + 
+                                    "\n\n\nAre you sure you want to Update?";
+        if(confirmbox == true){
+
+            customConfirmBox(text, function(value){ console.log(value); confirmValue = value; });
+            confirmbox = false;
+        }else if(confirmValue){
+            console.log("confirmValuevalue ......" + confirmValue);
+            console.log("Inside customConfirm confirmbox...." + confirmbox);
+            confirmbox = true;
+            return confirmValue;
+        }else if(!confirmValue){
+            console.log("confirmValuevalue ......" + confirmValue);
+            console.log("Inside customConfirm confirmbox...." + confirmbox);
+            confirmbox = true;
+            return confirmValue;
+        }
+        
+    }
+
+    function customConfirmBox(text, cb){
+    
+    // We need this later
+    //var body = document.getElementsByTagName('body')[0];
+     var body = document.getElementById('demo');
+    // First we create a div which holds the alert and give it a class to style it with css
+    var overlay = document.createElement('div');
+    overlay.className = 'customConfirmBox';
+  
+    // The box holds the content
+    var box = document.createElement('div');
+  
+    var p1 = document.createElement('p');
+    p1.appendChild(document.createTextNode("Ensure that the environment checkbox is selected"));
+    p1.appendChild(document.createTextNode('strong'));
+    var p2 = document.createElement('p');
+    p2.appendChild(document.createTextNode("Not selecting the environment checkbox will remove the user from Pub GUI"));
+    p2.appendChild(document.createTextNode('strong'));
+    var p3 = document.createElement('p');
+    p3.appendChild(document.createTextNode("Are you sure you want to Update?"));
+  
+    // We append the text to the div
+    box.appendChild(p1);
+    box.appendChild(p2);
+    box.appendChild(p3);
+    
+    // Create yes and no button
+    var yesButton = document.createElement('button');
+    var noButton = document.createElement('button');
+    
+    // Add text and events to the buttons    
+    yesButton.appendChild(document.createTextNode('Yes'));
+    yesButton.addEventListener('click', function(){ cb(true); customConfirm(); body.removeChild(overlay); }, false);
+    noButton.appendChild(document.createTextNode('No'));
+    noButton.addEventListener('click', function(){ cb(false); customConfirm(); body.removeChild(overlay); }, false);
+    
+    // Append the buttons to the box
+    box.appendChild(yesButton);
+    box.appendChild(noButton);
+
+    // Append the box to the Overlay
+    overlay.appendChild(box)
+    
+    // insert the Overlay with box into the dom    
+    body.appendChild(overlay);
+    
+    
+}
+
+</script>
+
+</html>
+
+
+
+
